@@ -1,3 +1,7 @@
+from chess.board import Board
+from chess.player import Player
+
+
 class Game:
     def __init__(self):
         self.board = Board()
@@ -11,3 +15,6 @@ class Game:
         if self.board.is_valid_move(move):
             self.board.move_piece(move)
             self.switch_turn()
+
+    def handle_square_selection(self, i, j):
+        self.board.handle_square_selection(i, j)
