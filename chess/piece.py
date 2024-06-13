@@ -1,4 +1,6 @@
-from chess.move import Move
+def chess_notation(piece, x, y):
+    piece_name = piece[1].upper() if not piece[1] == 'p' else ''
+    return piece_name + chr(ord('a') + x) + str(8 - y) + ','
 
 
 class Piece:
@@ -10,10 +12,10 @@ class Piece:
         pass  # return a list of valid moves
 
     def select(self):
-        print(f"{self.color[0]} {self.__class__.__name__} selected")
+        pass
 
     def move(self, i, j):
-        print(f"Moving {self.color[0]} {self.__class__.__name__} to {(i, j)}")
+        print(chess_notation(str(self), j, i))
         self.position = (i, j)
 
     def __str__(self):
@@ -29,7 +31,7 @@ class King(Piece):
         return f"{self.color[0]}k"
 
     def move(self, i, j):
-        print(f"Moving {self.color[0]} {self.__class__.__name__} to {(i, j)}")
+        print(chess_notation(str(self), j, i))
         self.position = (i, j)
         self.has_moved = True
 
@@ -41,8 +43,9 @@ class King(Piece):
                 if 0 <= row < 8 and 0 <= col < 8 and (row != i or col != j):
                     if board.get_piece_at(row, col) is None or board.get_piece_at(row, col).color != self.color:
                         moves[row][col] = True
-        if not self.has_moved:
-            if board.get_piece_at(i, 1) is None and board.get_piece_at(i, 2) is None and board.get_piece_at(i, 3) is None:
+        if not self.has_moved and not board.check == self.color:
+            if board.get_piece_at(i, 1) is None and board.get_piece_at(i, 2) is None and board.get_piece_at(i,
+                                                                                                            3) is None:
                 rook = board.get_piece_at(i, 0)
                 if isinstance(rook, Rook) and not rook.has_moved:
                     moves[i][2] = 'castle'
@@ -102,6 +105,12 @@ class Pawn(Piece):
                 piece = board.get_piece_at(i + direction, j + dx)
                 if piece is not None and piece.color != self.color:
                     moves[i + direction][j + dx] = True
+                if board.last_move is not None and isinstance(board.last_move.piece, Pawn):
+                    if board.last_move.start_pos[0] == i + 2 * direction and board.last_move.end_pos[0] == i and board.last_move.end_pos[1] == j + dx:
+                        moves[i + direction][j + dx] = 'en passant'
+        for row in range(8):
+            if i + direction == 0 or i + direction == 7:
+                moves[0 if self.color == 'white' else 7][row] = 'promotion'
         return moves
 
 
@@ -161,7 +170,7 @@ class Rook(Piece):
         return f"{self.color[0]}r"
 
     def move(self, i, j):
-        print(f"Moving {self.color[0]} {self.__class__.__name__} to {(i, j)}")
+        print(chess_notation(str(self), j, i))
         self.position = (i, j)
         self.has_moved = True
 
