@@ -17,4 +17,5 @@ class Game:
             self.switch_turn()
 
     def handle_square_selection(self, i, j):
-        self.board.handle_square_selection(i, j)
+        if self.board.handle_square_selection(i, j, self.current_turn):
+            self.switch_turn()

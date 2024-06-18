@@ -7,7 +7,7 @@ class BoardView(tk.Frame):
         super().__init__(master)
         self.game = game
         self.squares = None
-        self.square_size = 100
+        self.square_size = 80
         self.theme = ['#ebecd0', '#739552']
         self.current_selected_square = None
         self.create_widgets()
@@ -45,9 +45,6 @@ class BoardView(tk.Frame):
                 self.squares[(i, j)].delete('all')
                 piece = board.get_piece_at(i, j)
                 if piece is not None:
-                    pixel_x = j * self.square_size + self.square_size // 2
-                    pixel_y = i * self.square_size + self.square_size // 2
-                    # todo: animate the move
                     self.squares[(i, j)].create_image(
                         self.square_size // 2,
                         self.square_size // 2,
@@ -70,7 +67,6 @@ class Square(tk.Canvas):
         tk.Canvas.__init__(self, width=size, height=size, bg=color, highlightthickness=0)
         self.size = size
         self.color = color
-        # self.piece = None
 
     def select(self):
         self.config(bg='#b9ca43') if self.color == '#739552' else self.config(bg='#f5f682')
