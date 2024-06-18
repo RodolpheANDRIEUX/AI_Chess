@@ -60,15 +60,15 @@ class Board:
         self.last_move = move
         self.analyse_board()  # check, checkmate, stalemate
 
-    def handle_square_selection(self, i, j):
+    def handle_square_selection(self, i, j, player):
         if self.selected_piece is not None:
             if self.is_valid_move(i, j):
                 self.play(i, j)
                 self.unselect()
-                return
+                return True
         self.unselect()
         selection_request = self.get_piece_at(i, j)
-        if selection_request is not None:  # and selection_request.color == 'todo:':
+        if selection_request is not None and selection_request.color == player:
             self.select_piece(i, j)
 
     def select_piece(self, i, j):

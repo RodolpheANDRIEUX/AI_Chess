@@ -7,7 +7,7 @@ class BoardView(tk.Frame):
         super().__init__(master)
         self.game = game
         self.squares = None
-        self.square_size = 100
+        self.square_size = 80
         self.theme = ['#ebecd0', '#739552']
         self.current_selected_square = None
         self.create_widgets()
