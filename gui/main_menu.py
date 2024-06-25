@@ -5,9 +5,9 @@ from gui.board_view import BoardView
 
 
 class MainWindow(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, player, master=None):
         super().__init__(master)
-        self.game = Game()
+        self.game = Game(player)
         self.board_view = BoardView(self, self.game)
 
 
@@ -37,7 +37,12 @@ class MyButton(tk.Button):
         if self.id == '2 joueurs':
             for widget in self.master.master.winfo_children():
                 widget.destroy()
-            app = MainWindow(self.master.master)
+            app = MainWindow(2, self.master.master)
+            app.grid()
+        elif self.id == '1 joueur':
+            for widget in self.master.master.winfo_children():
+                widget.destroy()
+            app = MainWindow(1, self.master.master)
             app.grid()
 
 

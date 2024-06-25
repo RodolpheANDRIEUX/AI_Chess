@@ -110,7 +110,8 @@ class Pawn(Piece):
                         moves[i + direction][j + dx] = 'en passant'
         for row in range(8):
             if i + direction == 0 or i + direction == 7:
-                moves[0 if self.color == 'white' else 7][row] = 'promotion'
+                if moves[0 if self.color == 'white' else 7][row] is not False:
+                    moves[0 if self.color == 'white' else 7][row] = 'promotion'
         return moves
 
 
