@@ -1,6 +1,13 @@
 import copy
+import pygame
 from chess.move import Move
 from chess.piece import King, Queen, Pawn, Bishop, Rook, Knight
+
+
+def play_mp3(file_path):
+    pygame.mixer.init()
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play()
 
 
 def initialize_board():
@@ -24,6 +31,7 @@ def initialize_board():
     grid[0][5] = Bishop('black', (0, 5))
     grid[7][2] = Bishop('white', (7, 2))
     grid[7][5] = Bishop('white', (7, 5))
+    play_mp3('sounds/move.mp3')
     return grid
 
 
@@ -31,7 +39,7 @@ class Board:
     def __init__(self):
         self.check = None  # store the color of the player in check if any
         self.pieces = initialize_board()
-        self.parallel_universe = initialize_board()
+        self.parallel_universe = initialize_board()  # used to imagine the terrible consequences of a move
         self.valid_moves = [[False for _ in range(8)] for _ in range(8)]
         self.selected_piece = None
         self.last_move = None
@@ -49,6 +57,7 @@ class Board:
     def play(self, i, j):
         move = Move(self.selected_piece.position, (i, j), self.selected_piece)
         self.move_piece(move)
+        play_mp3('sounds/move.mp3')
         self.selected_piece.move(i, j)
         if self.valid_moves[i][j] == 'castle':
             self.castle(i, j)

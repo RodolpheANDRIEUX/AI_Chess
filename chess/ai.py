@@ -1,4 +1,6 @@
 import random
+import time
+
 from chess.move import Move
 
 
@@ -26,7 +28,6 @@ class Ai:
         if not possible:
             return
         move = random.choice(possible)
-        print(move.piece.position)
         self.board.select_piece(move.piece.position[0], move.piece.position[1])
         self.board.play(move.end_pos[0], move.end_pos[1])
         self.board.unselect()
