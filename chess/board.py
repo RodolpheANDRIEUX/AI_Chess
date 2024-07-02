@@ -43,6 +43,7 @@ class Board:
         self.valid_moves = [[False for _ in range(8)] for _ in range(8)]
         self.selected_piece = None
         self.last_move = None
+        self.end_game = None  # None, white (won), black (won), draw
 
     def move_piece(self, move):
         self.pieces[move.end_pos[0]][move.end_pos[1]] = move.piece
@@ -70,6 +71,8 @@ class Board:
         self.analyse_board()  # check, checkmate, stalemate
 
     def handle_square_selection(self, i, j, player):
+        if self.end_game is not None:
+            return
         if self.selected_piece is not None:
             if self.is_valid_move(i, j):
                 self.play(i, j)
@@ -186,8 +189,10 @@ class Board:
                                 if self.king_safe(move):
                                     return
         if self.check is not None:
+            self.end_game = "white" if self.check == 'black' else "black"
             print(f"{self.check} king in checkmate")
         else:
+            self.end_game = 'draw'
             print("stalemate")
 
     def promote(self, i, j):

@@ -1,13 +1,12 @@
 import random
-import time
 
 from chess.move import Move
 
 
 class Ai:
-    def __init__(self, board):
+    def __init__(self, board, color='black'):
         self.board = board
-        self.color = 'black'
+        self.color = color
 
     def get_possible_moves(self, board):
         moves = []
@@ -27,7 +26,4 @@ class Ai:
         possible = self.get_possible_moves(self.board)
         if not possible:
             return
-        move = random.choice(possible)
-        self.board.select_piece(move.piece.position[0], move.piece.position[1])
-        self.board.play(move.end_pos[0], move.end_pos[1])
-        self.board.unselect()
+        return random.choice(possible)
